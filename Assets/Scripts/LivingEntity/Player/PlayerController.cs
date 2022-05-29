@@ -101,16 +101,6 @@ public class PlayerController : MonoBehaviour
             Debug.Log("press");
            // Invoke("Jump", leftTime);
         }
-
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            if(Time.time >= (LastDash + CDTime))
-            {
-                //可以执行dash
-                readyToDash();
-
-            }
-        }
       
             Climb();
         
