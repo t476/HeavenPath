@@ -25,9 +25,7 @@ public class FallingBlockCollision : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (!collision.CompareTag("Ground"))
-			return;
-
+		
 		Vector3 pos = rigidBody.position;
 		RaycastHit2D hit;
 
