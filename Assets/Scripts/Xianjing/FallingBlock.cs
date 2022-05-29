@@ -30,9 +30,11 @@ public class FallingBlock : MonoBehaviour
 	{
 		if (!other.CompareTag("Player"))
 			return;
-
+		Fall();
 		box.enabled = false;
 		//audioSource.Play();//这里是加了动画
 		//anim.SetTrigger(fallParamID);
 	}
+
+
 }

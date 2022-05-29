@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator JumpDelay()
     {
-        yield return new WaitForSeconds(0.125f);
+        yield return new WaitForSeconds(0.07f);
 
             Debug.Log("jump");
            // isJump = true;
@@ -330,23 +330,16 @@ public class PlayerController : MonoBehaviour
             {
                 anim.SetBool("jumping", false);
                 anim.SetBool("Climbing", true);
-                anim.SetBool("Onladder", false);
+                anim.SetBool("Onladder", true);
                 rb.velocity = new Vector2(rb.velocity.x, moveY * onLadderSpeed);
                 rb.gravityScale = 0.0f;
             }
             else
             {
-                if (isJumping || isFalling ||anim.GetBool("running"))
-                {
-                    anim.SetBool("Climbing", false);
-                    anim.SetBool("Onladder", false);
-                }
-                else
-                {
                     anim.SetBool("Climbing", false);
                     rb.velocity = new Vector2(rb.velocity.x, 0.0f);
                     anim.SetBool("Onladder", true);
-                }
+                
             }
         }
         else
