@@ -100,6 +100,7 @@ public class AudioManager : MonoBehaviour
         {
             audioListener.position = playerT.position;
         }
+       
     }
 
     public void SetVolume(float volumePercent, AudioChannel channel)

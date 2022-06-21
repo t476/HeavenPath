@@ -40,6 +40,7 @@ public class BreakableTilemap : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Weapon"))
         {
+            AudioManager.instance.PlaySound("Glass", other.gameObject.transform.position);
             Vector3 hitPos = other.ClosestPoint(other.transform.position);
             pos1 = new Vector3(hitPos.x + offsetX, hitPos.y, 0f);
             pos2 = new Vector3(hitPos.x - offsetX, hitPos.y, 0f);

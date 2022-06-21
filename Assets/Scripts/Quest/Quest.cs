@@ -17,4 +17,4 @@ public class Quest
     public int requireAmount;
 }
 
-//TODO 可以用【ScriptableObject】替换
+

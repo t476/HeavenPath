@@ -8,13 +8,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/NormalRoom.unity
     guid: 4034dbc85503a1f479a9ec1e27a32d1d
+  - enabled: 1
+    path: Assets/Scenes/Wedding.unity
+    guid: 29e7f43b944dd44788a941c30b3d875e
+  - enabled: 1
+    path: Assets/Scenes/Wedding(noflower).unity
+    guid: 1f7c48885327f4332ac3aa6dd18f5957
+  - enabled: 1
+    path: Assets/Scenes/Wedding(flower).unity
+    guid: 7eee334ed8d41401398f8d86d1544ab8
   m_configObjects: {}

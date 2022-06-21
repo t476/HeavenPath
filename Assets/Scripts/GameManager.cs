@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     //todo奖励代码挂钩
@@ -15,6 +15,12 @@ public class GameManager : MonoBehaviour
     Animator anim;
     public float time = 1;
     public int deathNum;
+     [Header("场景管理")]
+    public int loadSense;
+    public int finishIndex;
+    Animator animMine;
+
+
 
 
     private void Awake()
@@ -34,10 +40,61 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        animMine = GetComponent<Animator>();
         anim = guoduImage.GetComponent<Animator>();
-        PlayerDie();
+        
+        
 
     }
+    private void Update()
+    {
+        if (loadSense != 0)
+        {
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                Debug.Log("inputk");
+                //直接先这样
+                SceneManager.LoadScene(loadSense);
+
+            }
+        }
+    }
+    public void animMe()
+    {
+        
+        animMine.SetBool("inEntered", true);
+        AudioManager.instance.PlaySound("Door", transform.position);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+       
+        if (collision.CompareTag("Player"))
+        {
+                 Debug.Log("woshi trigger");
+           
+                if (CountDownClock.instance.timeIsOut == false)
+            {
+                    Debug.Log("woshi 2chagnjing");
+                loadSense = 2;
+                }
+            else
+            {
+                //看有没有拿到花
+                if (finishIndex == 3)
+                {
+                    loadSense = 3;
+                }
+                if (finishIndex < 3)
+                {
+                    loadSense = 4;
+                }
+            }
+            
+        }
+    }
+    
+    
+
     public void PlayerDie()
     {
         deathNum++;
@@ -71,7 +128,7 @@ public class GameManager : MonoBehaviour
         }
         yield return null;
     }
-
+    
 
 
 

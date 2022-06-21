@@ -10,15 +10,7 @@ public class Menu : MonoBehaviour
     public GameObject optionsMenuHolder;
 
     public Slider[] volumeSliders;
-    [Header("故事讲述进场")]
-    public GameObject dialogueBox;//显示或隐藏panel
-    public Text dialogueText;
-    //保证句子不显示在一行
-    [TextArea(1, 3)] public string[] dialogueLines;
-    [SerializeField] private int currentLine;
-
-    private bool isScrolling;//禁止没有滚完玩家就跳对话
-    [SerializeField] private float scrollingSpeed;
+  
 
     void Start()
     {
@@ -30,40 +22,17 @@ public class Menu : MonoBehaviour
     }
     private void Update()
     {
-        if (dialogueBox.activeInHierarchy)//只在激活panel时检测按下左键
-        {
-           
-            //按下并松开左键
-            if (Input.GetMouseButtonUp(0) && !isScrolling)
-            {
-                AudioManager.instance.PlaySound2D("ButtonTip");
-                currentLine++;
-
-                if (currentLine < dialogueLines.Length)
-                {
-                    StartCoroutine(ScrollingText());//Letter by Letter Show
-                }
-                else
-                {
-                    SceneManager.LoadScene("NormalRoom");
-                }
-            }
-        }
+       
     }
 
     public void Play()
     {
         //这里转到一段剧情
-        mainMenuHolder.SetActive(false);
-        showStoryLine();
+        SceneManager.LoadScene(1);
+        
         
     }
-    public void showStoryLine()
-    {
-         dialogueBox.SetActive(true);
-         StartCoroutine(ScrollingText());//直接放在update会报错，why
-
-    }
+   
     public void Quit()
     {
         Application.Quit();
@@ -100,18 +69,6 @@ public class Menu : MonoBehaviour
         AudioManager.instance.SetVolume(volumeSliders[2].value, AudioManager.AudioChannel.Sfx);
     }
     //字母滚动效果
-    private IEnumerator ScrollingText()
-    {
-        isScrolling = true;
-        dialogueText.text = "";//清空
-
-        foreach (char letter in dialogueLines[currentLine].ToCharArray())
-        {
-            dialogueText.text += letter;
-            yield return new WaitForSeconds(scrollingSpeed);//一个字一个字显示
-        }
-
-        isScrolling = false;
-    }
+   
 
 }

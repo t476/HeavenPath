@@ -16,27 +16,21 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private float scrollingSpeed;
 
     public Talkable talkable;//采用获取脚本的方法访问变量
-    //这些参数应该从我的一个新的类穿过来，而且奖励和talkable里生成新的对话也要有一个新的类
-    //这个放在talkable里
-    //[Header("救我相关")]
-    //怎么尝试get
-    //public SaveMeQuest saveMeQuest;
     //设计成单例模式挂在Dialoguepanel下
-
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
         else
         {
-            if(instance != this)
+            if (instance != this)
             {
                 Destroy(gameObject);
             }
         }
-        DontDestroyOnLoad(gameObject);
+        
     }
 
     //打开对话窗口，文字滚动
@@ -56,46 +50,29 @@ public class DialogueManager : MonoBehaviour
 
         PlayerController.instance.isTalking = true;
     }
+
     private void Update()
     {
-        if(dialogueBox.activeInHierarchy)//只在激活panel时检测按下左键
+        if (dialogueBox.activeInHierarchy)//只在激活panel时检测按下左键
         {
-            //当任务为save类
-            
-            if (talkable.saveMeQuest&&Input.GetKeyUp(KeyCode.Return) &&!talkable.saveMeQuest.saved)
-            {
-                PlayerEnergy.instance.ep -= talkable.saveMeQuest.energyDelta;
-                GameManager.instance.UpdateState();
-                EnergyBar.instance.UpdateEp();
-                //任务完成
-                //todo如果save以后1，要调用精力条，精力--2对话结束后要开出奖励list
-                talkable.saveMeQuest.saved = true;
-                Debug.Log("任务完成");
-                if (!talkable.saveMeQuest.isFinished)
-                {
-                    ShowDialogue(talkable.congratsLines, talkable.hasName);//祝福的台词
-                    talkable.saveMeQuest.isFinished = true;//开关，保证一次
-                    //对话结束后给奖励--要改
-                    //talkable.questable.OfferRewards();
-                }
-                
-
-            }
-            //按下并松开右shift键
-            if (Input.GetKeyUp(KeyCode.RightShift)  && !isScrolling)
+            //按下并松开左键
+            if (Input.GetKeyDown(KeyCode.K)&& !isScrolling)
             {
                 currentLine++;
+               
 
                 if (currentLine < dialogueLines.Length)
                 {
+                    
                     CheckName();
                     StartCoroutine(ScrollingText());//Letter by Letter Show
                 }
                 #region
                 else// 对话即将结束时候
                 {
-                    if ((GetQuestResult()) && talkable.questable.isFinished == false)//如果当前对话的这个任务【已经完成】
+                    if (GetQuestResult() && talkable.questable.isFinished == false)//如果当前对话的这个任务【已经完成】
                     {
+                        GameManager.instance.finishIndex++;
                         ShowDialogue(talkable.congratsLines, talkable.hasName);//祝福的台词
                         talkable.questable.isFinished = true;//开关，保证一次
                         print(string.Format("QUEST: {0} HAS COMPLETED", talkable.questable.quest.questName));
@@ -115,8 +92,11 @@ public class DialogueManager : MonoBehaviour
                     else// 如果当前对话的这个任务【没有完成】
                     {
                         //当对话结束
+                        Debug.Log("jinru");
                         PlayerController.instance.isTalking = false;
+                        Debug.Log("jinru2");
                         dialogueBox.SetActive(false);
+                        Debug.Log("jinru3");
 
                         if (talkable.questable == null)
                         {
@@ -139,9 +119,9 @@ public class DialogueManager : MonoBehaviour
                         //这部分是当我们和任务要求的游戏对象，比如隐藏NPC对话时，hasTalked等于True
                         if (talkable.questTarget != null)
                         {
-                            for (int i = 0; i < PlayerItem.instance.questList.Count; i++)
+                            for (int i = 0; i < Player.instance.questList.Count; i++)
                             {
-                                if (talkable.questTarget.questName == PlayerItem.instance.questList[i].questName)
+                                if (talkable.questTarget.questName == Player.instance.questList[i].questName)
                                 {
                                     talkable.questTarget.hasTalked = true;
                                     talkable.questTarget.CheckQuestIsComplete();
@@ -165,10 +145,10 @@ public class DialogueManager : MonoBehaviour
         if (talkable.questable == null)
             return false;
 
-        for (int i = 0; i < PlayerItem.instance.questList.Count; i++)
+        for (int i = 0; i < Player.instance.questList.Count; i++)
         {
-            if (talkable.questable.quest.questName == PlayerItem.instance.questList[i].questName
-                && PlayerItem.instance.questList[i].questStatus == Quest.QuestStatus.Completed)
+            if (talkable.questable.quest.questName == Player.instance.questList[i].questName
+                && Player.instance.questList[i].questStatus == Quest.QuestStatus.Completed)
             {
                 talkable.questable.quest.questStatus = Quest.QuestStatus.Completed;
                 return true;
@@ -190,7 +170,7 @@ public class DialogueManager : MonoBehaviour
     //检查对话内容是否含有对话者的名字
     private void CheckName()
     {
-        if(dialogueLines[currentLine].StartsWith("n-"))
+        if (dialogueLines[currentLine].StartsWith("n-"))
         {
             nameText.text = dialogueLines[currentLine].Replace("n-", "");//在NameText处显示名字，并且去除标记n-
             currentLine++;//跳过显示名字的这一行
@@ -203,7 +183,7 @@ public class DialogueManager : MonoBehaviour
         isScrolling = true;
         dialogueText.text = "";//清空
 
-        foreach(char letter in dialogueLines[currentLine].ToCharArray())
+        foreach (char letter in dialogueLines[currentLine].ToCharArray())
         {
             dialogueText.text += letter;//HELLO => H->E->L->L->O//MARKER Letter by Letter Show
             yield return new WaitForSeconds(scrollingSpeed);

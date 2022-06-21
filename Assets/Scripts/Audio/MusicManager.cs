@@ -6,7 +6,7 @@ public class MusicManager : MonoBehaviour
 {
 
     public AudioClip mainTheme;
-    public AudioClip shopTheme;
+    public AudioClip mengTheme;
     public AudioClip menuTheme;
 
     string sceneName;
@@ -68,14 +68,18 @@ public class MusicManager : MonoBehaviour
     {
         AudioClip clipToPlay = null;
 
-        if (sceneName == "Menu")
-        {
-            clipToPlay = menuTheme;
-        }
-        //todoelse if():商店老板界面播放老板的音乐
-        else 
+        if (sceneName == "NormalRoom")
         {
             clipToPlay = mainTheme;
+        }
+        //todoelse if():商店老板界面播放老板的音乐
+        else if(sceneName=="Wedding")
+        {
+            clipToPlay = mengTheme;
+        }
+        else
+        {
+            clipToPlay = menuTheme;
         }
 
         if (clipToPlay != null)

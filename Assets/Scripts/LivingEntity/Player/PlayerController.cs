@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour
         {
            jumpPressed = true;
             canClimb = true;
-            Debug.Log("press");
+           
            // Invoke("Jump", leftTime);
         }
       
@@ -112,6 +112,9 @@ public class PlayerController : MonoBehaviour
         if (isTalking||isShooting||isCantMoving)
         {
             rb.velocity=new Vector2(0,0);
+            SwitchAnim();
+
+
             return;
         }
         isGround = Physics2D.OverlapCircle(groundCheck.position, 0.1f, ground);
@@ -177,7 +180,7 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.07f);
 
-            Debug.Log("jump");
+            
            // isJump = true;
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             jumpCount--;
@@ -213,12 +216,12 @@ public class PlayerController : MonoBehaviour
         {   //Player跳上平台没状态转换应该是因为刚好跳上去falling成false了
             //这样就不去判断底下的条件了没法把jump的值改过来了 
             anim.SetBool("falling", false);
-            Debug.Log("gouundfalse");
+           
             anim.SetBool("jumping", false);//解决：加上这一句ok
         }
         if (isJump)
         {
-            Debug.Log("anim");
+         
             anim.SetBool("jumping", true);
         }
         if (rb.velocity.y < 0 && !isLadder&&!isGround)
